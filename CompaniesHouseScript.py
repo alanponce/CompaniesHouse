@@ -9,7 +9,7 @@ import time
 from requests.auth import HTTPBasicAuth
 
 URL  = requests.get('https://api.companieshouse.gov.uk/company/', 
-                    auth=HTTPBasicAuth('VeBXX0FG5pgfK63Khy2TTbKKOU3qzKWReXKhUXMJ', ''))
+                    auth=HTTPBasicAuth('XXX123XXX', ''))
 URL.status_code
 URL.json()
 
