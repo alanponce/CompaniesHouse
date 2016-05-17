@@ -32,7 +32,8 @@ def get_list_company(infile):
         csvreader = csv.reader(f)
         next(csvreader)  # to skip the header
         for l in csvreader:
-            yield l[0]  # csv reader return a list, just yield the unique element of the list to return un str
+            # yield '000{}'.format(l[0])  # csv reader return a list, just yield the unique element of the list to return un str
+            yield l[0]
 
 
 def create_url(*args):
@@ -51,7 +52,7 @@ def parse_company(url, api_key=API_KEY):
     resp = dict()
     if response.status_code == 200:
         if response.headers['content-type'] == 'application/json':
-            resp = response.json()['response']
+            resp = response.json()
         else:
             print('Error in the type of answer received: {} with the URL: {}'.format(response.headers['content-type'], url))
     else:
