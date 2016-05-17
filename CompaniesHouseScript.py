@@ -6,18 +6,24 @@ import csv
 import json
 import time
 
+from unittest import main, TestCase
+from urllib import request
+#from urllib import urlopen
+
+import os
+
 from requests.auth import HTTPBasicAuth
 
 URL  = requests.get('https://api.companieshouse.gov.uk/company/', 
-                    auth=HTTPBasicAuth('XXX123XXX', ''))
+	auth=HTTPBasicAuth('VeBXX0FG5pgfK63Khy2TTbKKOU3qzKWReXKhUXMJ', ''))
+
+API_KEY = URL
+
 URL.status_code
 URL.json()
 
-""" This is the code that works with the other API
-"""
-
-TIME_SLEEP = 0
-INFILE = './CompaniesHouse.csv'
+TIME_SLEEP = 0  # time interval between two call in sec. Can be in float number
+INFILE = './DuedilListFinal3.csv'
 OUTFILE = './result.json'
 
 def get_list_company(infile):
@@ -46,6 +52,8 @@ def parse_company(url, api_key=API_KEY):
         is a json format otherwise print error and return empty dict otherwise
     """
     response = requests.get(url, data=api_key)
+    print(url)
+    content = resp.content
     resp = dict()
     if response.status_code == 200:
         if response.headers['content-type'] == 'application/json':
@@ -56,7 +64,6 @@ def parse_company(url, api_key=API_KEY):
         print('Error {} in accessing service with the URL: {}'.format(response.status_code, url))
     return response.status_code, resp
 
-
 def company_result():
     for company in get_list_company(INFILE):
         time.sleep(TIME_SLEEP)
@@ -64,7 +71,6 @@ def company_result():
         status, response = parse_company(url)
         print(company)
         yield company, response
-
 
 def main():
     # to reinitialise the file, comment if you don't want that behaviour
@@ -77,3 +83,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
