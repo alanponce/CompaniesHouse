@@ -13,7 +13,7 @@ from requests.auth import HTTPBasicAuth
 
 URL = 'https://api.companieshouse.gov.uk/company/'
 
-API_KEY = 'VeBXX0FG5pgfK63Khy2TTbKKOU3qzKWReXKhUXMJ'
+API_KEY = 'XXXabc123def45XXX'
 
 # TEST = requests.get(URL, auth=HTTPBasicAuth(API_KEY, ''))
 # print(TEST)
