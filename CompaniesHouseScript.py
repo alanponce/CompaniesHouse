@@ -6,37 +6,33 @@ import csv
 import json
 import time
 
-from unittest import main, TestCase
-from urllib import request
-#from urllib import urlopen
-
-import os
+from unittest import TestCase
+# from urllib import urlopen
 
 from requests.auth import HTTPBasicAuth
 
-URL  = requests.get('https://api.companieshouse.gov.uk/company/', 
-	auth=HTTPBasicAuth('VeBXX0FG5pgfK63Khy2TTbKKOU3qzKWReXKhUXMJ', ''))
+URL = 'https://api.companieshouse.gov.uk/company/'
 
-API_KEY = URL
+API_KEY = 'VeBXX0FG5pgfK63Khy2TTbKKOU3qzKWReXKhUXMJ'
 
-URL.status_code
-URL.json()
+# TEST = requests.get(URL, auth=HTTPBasicAuth(API_KEY, ''))
+# print(TEST)
+# raise
+
 
 TIME_SLEEP = 0  # time interval between two call in sec. Can be in float number
-INFILE = './DuedilListFinal3.csv'
+INFILE = './CompaniesHouse.csv'
 OUTFILE = './result.json'
+
 
 def get_list_company(infile):
     """ yield the company number from the txt file
     """
-    # outlist = list()
     with open(infile, 'r') as f:
         csvreader = csv.reader(f)
         next(csvreader)  # to skip the header
         for l in csvreader:
             yield l[0]  # csv reader return a list, just yield the unique element of the list to return un str
-            # outlist.append(l)
-    # return outlist
 
 
 def create_url(*args):
@@ -51,9 +47,7 @@ def parse_company(url, api_key=API_KEY):
         Return result if receive a 200 and that the response
         is a json format otherwise print error and return empty dict otherwise
     """
-    response = requests.get(url, data=api_key)
-    print(url)
-    content = resp.content
+    response = requests.get(url, auth=HTTPBasicAuth(API_KEY, ''))
     resp = dict()
     if response.status_code == 200:
         if response.headers['content-type'] == 'application/json':
@@ -64,6 +58,7 @@ def parse_company(url, api_key=API_KEY):
         print('Error {} in accessing service with the URL: {}'.format(response.status_code, url))
     return response.status_code, resp
 
+
 def company_result():
     for company in get_list_company(INFILE):
         time.sleep(TIME_SLEEP)
@@ -71,6 +66,7 @@ def company_result():
         status, response = parse_company(url)
         print(company)
         yield company, response
+
 
 def main():
     # to reinitialise the file, comment if you don't want that behaviour
@@ -83,4 +79,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
